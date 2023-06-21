@@ -10,8 +10,8 @@ const get = async <T>(query: string): Promise<T> => {
   return response.data;
 };
 
-const post = async <T>(query: string): Promise<T> => {
-  const response = await AxiosInstance.post(query);
+const post = async <T>(query: string, body: any): Promise<T> => {
+  const response = await AxiosInstance.post(query, body);
   return response.data;
 };
 
@@ -22,18 +22,12 @@ const listDrivers = async (): Promise<Driver[]> => {
 
 const overtakeDrivers = async ({
   driverId,
-  targetPlace,
+  drivers,
 }: {
   driverId: number;
-  targetPlace: number;
-}): Promise<Driver[]> => {
-  console.log('here', process.env.NEXT_PUBLIC_SERVER_URL);
-  const searchParams = new URLSearchParams(`targetPlace=${targetPlace}`);
-
-  const drivers = await post<Driver[]>(
-    `/drivers/${driverId}/overtake?${searchParams.toString()}`,
-  );
-  return drivers;
+  drivers: Driver[];
+}): Promise<void> => {
+  await post<Driver[]>(`/drivers/${driverId}/overtake`, drivers);
 };
 
 export { listDrivers, overtakeDrivers };
