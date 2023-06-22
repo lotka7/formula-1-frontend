@@ -57,7 +57,6 @@ const Drivers = ({
     driverId: number;
     drivers: Driver[];
   }) => {
-    console.log('drivers', drivers);
     const updatedDrivers = drivers.map((driver, index) => {
       driver.place = index + 1;
       return driver;
