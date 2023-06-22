@@ -6,7 +6,6 @@ interface Driver {
   country: string;
   team: string;
   place: number;
-  imgUrl: string;
 }
 
 export default Driver;

@@ -17,6 +17,7 @@
     "cross-env": "^7.0.3",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.6",
+    "flag-icons": "^6.7.0",
     "framer-motion": "^10.12.16",
     "next": "13.4.6",
     "postcss": "8.4.24",

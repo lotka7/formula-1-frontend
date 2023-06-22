@@ -7,7 +7,9 @@ import ArrowDown from '@/icons/ArrowDown';
 import ArrowUp from '@/icons/ArrowUp';
 import { Reorder } from 'framer-motion';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useState } from 'react';
+import '/node_modules/flag-icons/css/flag-icons.min.css';
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const drivers = await listDrivers();
@@ -70,41 +72,58 @@ const Drivers = ({
         <title>Formula 1 - drivers</title>
         <meta name="description" content={'Drivers of Formula 1'} />
       </Head>
-      <Reorder.Group
-        axis="y"
-        values={drivers}
-        onReorder={setDrivers}
+      <Image
+        src="/formula-1-logo.png"
+        alt="Formula 1 Logo"
+        width={300}
+        height={150}
         className="my-4"
-      >
+      />
+      <Reorder.Group axis="y" values={drivers} onReorder={setDrivers}>
         {drivers.map((driver, index) => (
           <div
             key={driver.id}
-            className={`flex flex-row justify-center items-center 
-            ${index % 2 ? 'ml-[100px]' : 'mr-[100px]'}`}
+            className={`flex flex-col justify-center items-center `}
           >
-            {index !== drivers.length - 1 && (
-              <ArrowDown
-                className="h-4 w-4 fill-red-500"
-                onClick={() => handleChanges(driver.id, index, Direction.DOWN)}
-              />
-            )}
             <Reorder.Item
               value={driver}
-              className={`hover:cursor-grab active:cursor-grabbing flex flex-row justify-center items-center m-4 space-x-3 border-solid border-2 border-indigo-600 rounded p-3`}
+              className={`hover:cursor-grab active:cursor-grabbing flex flex-row justify-center items-center m-1 space-x-3 p-3`}
               onDragEnd={() =>
                 handleOnDragEnd({ driverId: driver.id, drivers })
               }
             >
-              <img src={driver.imgSrc} alt={driver.code} />
-              <div className="text-center">{`#${driver.place}`}</div>
-              <div>{`${driver.firstname} ${driver.lastname}`}</div>
+              <div className="flex flex-col space-y-5 justify-center items-center">
+                <Image
+                  src={`${
+                    process.env.NEXT_PUBLIC_SERVER_URL_BASE
+                  }/static/${driver.code.toLowerCase()}.png`}
+                  alt={driver.code}
+                  width={100}
+                  height={100}
+                />
+                <div className="flex space-x-3">
+                  <div className="text-center">{`#${driver.place}`}</div>
+                  <div>{`${driver.firstname} ${driver.lastname}`}</div>
+                  <div className={`fi fi-${driver.country.toLowerCase()}`} />
+                </div>
+              </div>
             </Reorder.Item>
-            {index !== 0 && (
-              <ArrowUp
-                className="h-4 w-4 fill-green-500"
-                onClick={() => handleChanges(driver.id, index, Direction.UP)}
-              />
-            )}
+            <div className="flex">
+              {index !== 0 && (
+                <ArrowUp
+                  className="h-4 w-4 fill-green-500"
+                  onClick={() => handleChanges(driver.id, index, Direction.UP)}
+                />
+              )}
+              {index !== drivers.length - 1 && (
+                <ArrowDown
+                  className="h-4 w-4 fill-red-500 "
+                  onClick={() =>
+                    handleChanges(driver.id, index, Direction.DOWN)
+                  }
+                />
+              )}
+            </div>
           </div>
         ))}
       </Reorder.Group>
